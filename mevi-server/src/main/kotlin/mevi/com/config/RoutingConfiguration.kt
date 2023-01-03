@@ -1,4 +1,4 @@
-package mevi.com.plugins
+package mevi.com.config
 
 import io.ktor.server.application.*
 import io.ktor.server.response.*
