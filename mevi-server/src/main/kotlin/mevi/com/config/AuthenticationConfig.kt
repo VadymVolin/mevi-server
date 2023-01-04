@@ -9,29 +9,27 @@ import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
 
 fun Application.configureAuthentication() {
-    val environment = this@configureAuthentication.environment
-    install(Authentication) {
-        val secret = environment.config.property("jwt.secret").getString()
-        val issuer = environment.config.property("jwt.issuer").getString()
-        val audience = environment.config.property("jwt.audience").getString()
-        val realmConfig = environment.config.property("jwt.realm").getString()
-        jwt("auth-jwt") {
-            realm = realmConfig
-            verifier(
-                JWT.require(Algorithm.HMAC256(secret)).withAudience(audience).withIssuer(issuer).build()
-            )
-            validate { credential ->
-
-                this@configureAuthentication.log.info("$credential")
-
-                if (credential.payload.getClaim("username")?.asString()?.isNotBlank() == true) {
-                    JWTPrincipal(credential.payload)
-                } else {
-                    null
+    with(this@configureAuthentication.environment) {
+        install(Authentication) {
+            val secret = config.property(JWT_SECRET).getString()
+            val issuer = config.property(JWT_ISS).getString()
+            val audience = config.property(JWT_AUD).getString()
+            val realmConfig = config.property(JWT_RLM).getString()
+            jwt(AUTH_SCOPE) {
+                realm = realmConfig
+                verifier(
+                    JWT.require(Algorithm.HMAC256(secret)).withAudience(audience).withIssuer(issuer).build()
+                )
+                validate { credential ->
+                    if (credential.payload.getClaim(USERNAME_PAYLOAD)?.asString()?.isNotBlank() == true) {
+                        JWTPrincipal(credential.payload)
+                    } else {
+                        null
+                    }
                 }
-            }
-            challenge { defaultScheme, realm ->
-                call.respond(HttpStatusCode.Unauthorized, "Token is not valid or has expired")
+                challenge { defaultScheme, realm ->
+                    call.respond(HttpStatusCode.Unauthorized, TOKEN_INVALID)
+                }
             }
         }
     }
