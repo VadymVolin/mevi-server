@@ -21,7 +21,8 @@ fun Application.configureAuthentication() {
                     JWT.require(Algorithm.HMAC256(secret)).withAudience(audience).withIssuer(issuer).build()
                 )
                 validate { credential ->
-                    if (credential.payload.getClaim(USERNAME_PAYLOAD)?.asString()?.isNotBlank() == true) {
+                    if (credential.payload.getClaim(USERNAME_PAYLOAD)?.asString()?.isNotBlank() == true
+                        && credential.payload.getClaim(PASSWORD_PAYLOAD)?.asString()?.isNotBlank() == true) {
                         JWTPrincipal(credential.payload)
                     } else {
                         null

@@ -26,6 +26,8 @@ fun Application.configureRouting() {
                     .withAudience(audience)
                     .withIssuer(issuer)
                     .withClaim(USERNAME_PAYLOAD, user.username)
+                    .withClaim(PASSWORD_PAYLOAD, user.password)
+                    .withIssuedAt(Date(System.currentTimeMillis()))
                     .withExpiresAt(Date(System.currentTimeMillis() + 60000))
                     .sign(Algorithm.HMAC256(secret))
                 call.respond(hashMapOf(TOKEN to token))
