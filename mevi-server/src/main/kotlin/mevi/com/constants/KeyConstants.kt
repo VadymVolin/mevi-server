@@ -1,4 +1,4 @@
-package mevi.com.config
+package mevi.com.constants
 
 //auth
 const val AUTH_SCOPE = "auth-jwt"
