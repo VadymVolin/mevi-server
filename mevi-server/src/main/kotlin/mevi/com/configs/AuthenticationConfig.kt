@@ -1,4 +1,4 @@
-package mevi.com.config
+package mevi.com.configs
 
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
@@ -7,6 +7,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
+import mevi.com.constants.*
 
 fun Application.configureAuthentication() {
     with(this@configureAuthentication.environment) {
@@ -15,7 +16,7 @@ fun Application.configureAuthentication() {
             val issuer = config.property(JWT_ISS).getString()
             val audience = config.property(JWT_AUD).getString()
             val realmConfig = config.property(JWT_RLM).getString()
-            jwt(AUTH_SCOPE) {
+            jwt(JWT_AUTH_SCOPE) {
                 realm = realmConfig
                 verifier(
                     JWT.require(Algorithm.HMAC256(secret)).withAudience(audience).withIssuer(issuer).build()
