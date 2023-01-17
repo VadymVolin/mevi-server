@@ -1,5 +1,11 @@
 package mevi.com.constants
 
 //auth
-const val AUTH_ROUTE = "/auth"
+const val JWT_FORM_AUTH_ROUTE = "/auth/email"
+const val JWT_PHONE_AUTH_ROUTE = "/auth/phone"
+const val GOOGLE_AUTH_ROUTE = "/auth/google"
+const val FACEBOOK_AUTH_ROUTE = "/auth/facebook"
+const val APPLE_AUTH_ROUTE = "/auth/apple"
+
+
 const val ROOT_ROUTE = "/"

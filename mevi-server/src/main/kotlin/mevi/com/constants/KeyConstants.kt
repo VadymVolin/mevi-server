@@ -1,10 +1,10 @@
 package mevi.com.constants
 
 //auth
-const val AUTH_SCOPE = "auth-jwt"
+const val JWT_AUTH_SCOPE = "auth-jwt"
 const val FIRSTNAME_PAYLAOD = "firstname"
 const val LASTNAME_PAYLAOD = "lastname"
-const val PHONENUMBER_PAYLAOD = "phonenumber"
+const val PHONE_NUMBER_PAYLAOD = "phonenumber"
 const val AGE_PAYLAOD = "age"
 const val USERNAME_PAYLOAD = "username"
 const val PASSWORD_PAYLOAD = "password"

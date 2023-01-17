@@ -1,4 +1,4 @@
-package mevi.com.config
+package mevi.com.configs
 
 import io.ktor.serialization.gson.*
 import io.ktor.server.application.*

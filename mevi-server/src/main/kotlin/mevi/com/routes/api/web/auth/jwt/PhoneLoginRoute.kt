@@ -1,5 +1,6 @@
-package mevi.com.routes.auth
+package mevi.com.routes.api.web.auth.jwt
 
+import com.auth0.jwt.algorithms.Algorithm.HMAC256
 import io.ktor.server.application.*
 import io.ktor.server.request.*
 import io.ktor.server.response.*
@@ -8,8 +9,8 @@ import mevi.com.constants.*
 import mevi.com.models.User
 import java.util.*
 
-fun Route.loginRoute() {
-    post(AUTH_ROUTE) {
+fun Route.phoneLoginRoute() {
+    post(JWT_PHONE_AUTH_ROUTE) {
         with(this.application.environment) {
             val secret = config.property(JWT_SECRET).getString()
             val issuer = config.property(JWT_ISS).getString()
@@ -23,7 +24,7 @@ fun Route.loginRoute() {
                 .withClaim(PASSWORD_PAYLOAD, user.password)
                 .withIssuedAt(Date(System.currentTimeMillis()))
                 .withExpiresAt(Date(System.currentTimeMillis() + 60000))
-                .sign(com.auth0.jwt.algorithms.Algorithm.HMAC256(secret))
+                .sign(HMAC256(secret))
             call.respond(hashMapOf(TOKEN to token))
         }
     }
