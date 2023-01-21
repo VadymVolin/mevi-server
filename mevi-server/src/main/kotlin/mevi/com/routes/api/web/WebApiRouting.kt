@@ -1,4 +1,4 @@
-    package mevi.com.routes.api.web
+package mevi.com.routes.api.web
 
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
