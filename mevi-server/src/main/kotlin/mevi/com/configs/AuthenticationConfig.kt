@@ -8,6 +8,7 @@ import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
 import io.ktor.server.response.*
+import io.ktor.util.*
 import mevi.com.constants.*
 
 
@@ -40,8 +41,6 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
             // oauth
             val redirects = mutableMapOf<String, String>()
             oauth(OAUTH_AUTH_SCOPE) {
-                TODO("env settings")
-//                val env = this.application.environment
                 urlProvider = { BASE_URL.plus(GOOGLE_AUTH_RESPONSE_ROUTE) }
                 providerLookup = {
                     OAuthServerSettings.OAuth2ServerSettings(
@@ -49,12 +48,16 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
                         authorizeUrl = "https://accounts.google.com/o/oauth2/auth",
                         accessTokenUrl = "https://accounts.google.com/o/oauth2/token",
                         requestMethod = HttpMethod.Post,
-                        clientId = System.getenv("GOOGLE_CLIENT_ID"),
-                        clientSecret = System.getenv("GOOGLE_CLIENT_SECRET"),
+                        clientId = config.property(GOOGLE_CLOUD_CLIENT_ID).getString(),
+                        clientSecret = config.property(GOOGLE_CLOUD_CLIENT_SECRET).getString(),
                         defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile"),
                         extraAuthParameters = listOf("access_type" to "offline"),
                         onStateCreated = { call, state ->
-                            redirects[state] = call.request.queryParameters["redirectUrl"]!!
+                            call.application.environment.log.debug("FORTRA handle: ${call.request.rawQueryParameters.toMap().toString()}")
+                            call.application.environment.log.debug("FORTRA handle: ${call.response.status()}")
+
+                            call.request.queryParameters["redirectUrl"]?.let { redirects[state] = it }
+
                         }
                     )
                 }

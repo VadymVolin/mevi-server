@@ -9,3 +9,6 @@ jwt:
   issuer: "http://0.0.0.0:8080/"
   audience: "http://0.0.0.0:8080/"
   realm: "Access to '/'"
+google_cloud:
+  client_id: "CHECK_PRIVATE_SECRET_STORE"
+  client_secret: "CHECK_PRIVATE_SECRET_STORE"
