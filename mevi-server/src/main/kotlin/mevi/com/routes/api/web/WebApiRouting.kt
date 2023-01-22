@@ -3,6 +3,7 @@ package mevi.com.routes.api.web
 import io.ktor.server.auth.*
 import io.ktor.server.routing.*
 import mevi.com.constants.JWT_AUTH_SCOPE
+import mevi.com.constants.OAUTH_AUTH_SCOPE
 import mevi.com.routes.api.web.auth.jwt.emailLoginRoute
 import mevi.com.routes.api.web.auth.jwt.emailRegistrationRoute
 import mevi.com.routes.api.web.auth.jwt.phoneLoginRoute
@@ -20,11 +21,13 @@ fun Routing.registerWebApiRoutes() {
     // sign in
     emailLoginRoute()
     phoneLoginRoute()
-    googleLoginRoute()
     facebookLoginRoute()
     appleLoginRoute()
 
     authenticate(JWT_AUTH_SCOPE) {
         mainRoute()
+    }
+    authenticate(OAUTH_AUTH_SCOPE) {
+        googleLoginRoute()
     }
 }

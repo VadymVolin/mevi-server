@@ -3,27 +3,15 @@ package mevi.com.configs
 import com.auth0.jwt.JWT
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.client.*
-import io.ktor.client.engine.cio.*
 import io.ktor.http.*
-import io.ktor.serialization.gson.*
 import io.ktor.server.application.*
 import io.ktor.server.auth.*
 import io.ktor.server.auth.jwt.*
-import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.response.*
 import mevi.com.constants.*
-import java.text.DateFormat
 
-val applicationHttpClient = HttpClient(CIO) {
-    install(ContentNegotiation) {
-        gson {
-            setDateFormat(DateFormat.LONG)
-            setPrettyPrinting()
-        }
-    }
-}
 
-fun Application.configureAuthentication() {
+fun Application.configureAuthentication(httpClient: HttpClient) {
     with(this@configureAuthentication.environment) {
         install(Authentication) {
             // jwt
@@ -50,8 +38,11 @@ fun Application.configureAuthentication() {
             }
 
             // oauth
+            val redirects = mutableMapOf<String, String>()
             oauth(OAUTH_AUTH_SCOPE) {
-                urlProvider = { "http://0.0.0.0:8080/callback" }
+                TODO("env settings")
+//                val env = this.application.environment
+                urlProvider = { BASE_URL.plus(GOOGLE_AUTH_RESPONSE_ROUTE) }
                 providerLookup = {
                     OAuthServerSettings.OAuth2ServerSettings(
                         name = "google",

@@ -5,6 +5,6 @@ import io.ktor.server.application.*
 fun Application.initializeConfigurations() {
     configureCors()
     configureContentNegotiation()
-    configureAuthentication()
+    configureAuthentication(applicationHttpClient)
     configureRouting()
 }
