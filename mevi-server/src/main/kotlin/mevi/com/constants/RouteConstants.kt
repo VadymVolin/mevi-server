@@ -11,4 +11,4 @@ const val APPLE_AUTH_ROUTE = "/auth/apple"
 
 const val ROOT_ROUTE = "/"
 
-const val BASE_URL = "http://0.0.0.0:8080"
+const val BASE_URL = "http://localhost:8080"

@@ -11,6 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.util.*
 import mevi.com.constants.*
 
+val redirects = mutableMapOf<String, String>()
 
 fun Application.configureAuthentication(httpClient: HttpClient) {
     with(this@configureAuthentication.environment) {
@@ -39,7 +40,6 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
             }
 
             // oauth
-            val redirects = mutableMapOf<String, String>()
             oauth(OAUTH_AUTH_SCOPE) {
                 urlProvider = { BASE_URL.plus(GOOGLE_AUTH_RESPONSE_ROUTE) }
                 providerLookup = {

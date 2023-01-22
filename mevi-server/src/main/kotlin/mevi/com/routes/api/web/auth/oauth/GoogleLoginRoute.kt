@@ -34,29 +34,29 @@ fun Route.googleLoginRoute() {
     }
 
     // TODO: check
-    get("/{path}") {
-        val userSession: UserSession? = call.sessions.get()
-        if (userSession != null) {
-            val userInfo: UserInfo = applicationHttpClient.get("https://www.googleapis.com/oauth2/v2/userinfo") {
-                headers {
-                    append(HttpHeaders.Authorization, "Bearer ${userSession.token}")
-                }
-            }.body()
-            call.respondText("Hello, ${userInfo.name}!")
-        } else {
-            val redirectUrl = URLBuilder("http://0.0.0.0:8080/login").run {
-                parameters.append("redirectUrl", call.request.uri)
-                build()
-            }
-            call.respondRedirect(redirectUrl)
-        }
-    }
-
-    // TODO: check
     get(GOOGLE_AUTH_RESPONSE_ROUTE) {
+//        val principal: OAuthAccessTokenResponse.OAuth2? = call.principal()
+//        call.sessions.set(UserSession(principal!!.state!!, principal.accessToken))
+//        val redirect = redirects[principal.state!!]
+//        call.respondRedirect(redirect!!)
         val principal: OAuthAccessTokenResponse.OAuth2? = call.principal()
-        call.sessions.set(UserSession(principal!!.state!!, principal.accessToken))
-        val redirect = redirects[principal.state!!]
-        call.respondRedirect(redirect!!)
+        call.application.environment.log.debug("FORTRA accessToken: ${principal?.accessToken}")
+        call.application.environment.log.debug("FORTRA state: ${principal?.state}")
+        call.application.environment.log.debug("FORTRA refreshToken: ${principal?.refreshToken}")
+        call.application.environment.log.debug("FORTRA expiresIn: ${principal?.expiresIn}")
+        call.application.environment.log.debug("FORTRA tokenType: ${principal?.tokenType}")
+
+        val userSession: UserSession = UserSession(principal!!.state!!, principal.accessToken)
+        call.application.environment.log.debug("FORTRA : " + applicationHttpClient.get("https://www.googleapis.com/oauth2/v2/userinfo") {
+            headers {
+                append(HttpHeaders.Authorization, "Bearer ${userSession.token}")
+            }
+        }.body<Any?>().toString())
+        val userInfo: UserInfo = applicationHttpClient.get("https://www.googleapis.com/oauth2/v2/userinfo") {
+            headers {
+                append(HttpHeaders.Authorization, "Bearer ${userSession.token}")
+            }
+        }.body()
+        call.respondText("Hello, ${userInfo}!")
     }
 }
