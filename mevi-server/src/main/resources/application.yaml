@@ -4,6 +4,11 @@ ktor:
       - mevi.com.ApplicationKt.module
   deployment:
     port: 8080
+
+storage:
+  driverClassName: "org.h2.Driver"
+  jdbcURL: "jdbc:h2:file:"
+  dbFilePath: build/db
 jwt:
   secret: "mevi"
   issuer: "http://0.0.0.0:8080/"
