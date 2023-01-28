@@ -41,7 +41,7 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
 
             // oauth
             oauth(OAUTH_AUTH_SCOPE) {
-                urlProvider = { BASE_URL.plus(GOOGLE_AUTH_RESPONSE_ROUTE) }
+                urlProvider = { BASE_URL.plus(GOOGLE_AUTH_PROVIDER_ROUTE) }
                 providerLookup = {
                     OAuthServerSettings.OAuth2ServerSettings(
                         name = "google",
@@ -50,11 +50,13 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
                         requestMethod = HttpMethod.Post,
                         clientId = config.property(GOOGLE_CLOUD_CLIENT_ID).getString(),
                         clientSecret = config.property(GOOGLE_CLOUD_CLIENT_SECRET).getString(),
-                        defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile"),
+                        defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"),
                         extraAuthParameters = listOf("access_type" to "offline"),
                         onStateCreated = { call, state ->
-                            call.application.environment.log.debug("FORTRA handle: ${call.request.rawQueryParameters.toMap().toString()}")
-                            call.application.environment.log.debug("FORTRA handle: ${call.response.status()}")
+                            call.application.environment.log.debug("FORTRA oauth: $state")
+                            call.application.environment.log.debug("FORTRA oauth: ${call.request.queryParameters["redirectUrl"].toString()}")
+                            call.application.environment.log.debug("FORTRA oauth: ${call.request.rawQueryParameters.toMap().toString()}")
+                            call.application.environment.log.debug("FORTRA oauth: ${call.response.status()}")
 
                             call.request.queryParameters["redirectUrl"]?.let { redirects[state] = it }
 
@@ -62,6 +64,7 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
                     )
                 }
                 client = httpClient
+
             }
         }
     }

@@ -16,7 +16,7 @@ object DatabaseFactory {
         val database = Database.connect(jdbcURL, driverClassName)
         transaction(database) {
             // Statements here
-            SchemaUtils.create(MODEL_NAME)
+//            SchemaUtils.create(MODEL_NAME)
         }
     }
 }

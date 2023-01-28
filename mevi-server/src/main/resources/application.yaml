@@ -15,5 +15,7 @@ jwt:
   audience: "http://0.0.0.0:8080/"
   realm: "Access to '/'"
 google_cloud:
-  client_id: "CHECK_PRIVATE_SECRET_STORE"
-  client_secret: "CHECK_PRIVATE_SECRET_STORE"
+  oauth2_authorize_url: ""
+  oauth2_access_token_url: ""
+  client_id: "client_id"
+  client_secret: "client_secret"
