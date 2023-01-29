@@ -24,7 +24,7 @@ fun Routing.registerWebApiRoutes() {
     facebookLoginRoute()
     appleLoginRoute()
 
-    authenticate(OAUTH_AUTH_SCOPE, JWT_AUTH_SCOPE) {
+    authenticate(JWT_AUTH_SCOPE) {
         mainRoute()
     }
     authenticate(OAUTH_AUTH_SCOPE) {

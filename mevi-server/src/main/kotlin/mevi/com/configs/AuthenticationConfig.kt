@@ -11,7 +11,7 @@ import io.ktor.server.response.*
 import io.ktor.util.*
 import mevi.com.constants.*
 
-val redirects = mutableMapOf<String, String>()
+//val redirects = mutableMapOf<String, String>()
 
 fun Application.configureAuthentication(httpClient: HttpClient) {
     with(this@configureAuthentication.environment) {
@@ -28,7 +28,8 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
                 )
                 validate { credential ->
                     if (credential.payload.getClaim(USERNAME_PAYLOAD)?.asString()?.isNotBlank() == true
-                        && credential.payload.getClaim(PASSWORD_PAYLOAD)?.asString()?.isNotBlank() == true) {
+                        && credential.payload.getClaim(PASSWORD_PAYLOAD)?.asString()?.isNotBlank() == true
+                    ) {
                         JWTPrincipal(credential.payload)
                     } else {
                         null
@@ -44,21 +45,28 @@ fun Application.configureAuthentication(httpClient: HttpClient) {
                 urlProvider = { BASE_URL.plus(GOOGLE_AUTH_PROVIDER_ROUTE) }
                 providerLookup = {
                     OAuthServerSettings.OAuth2ServerSettings(
-                        name = "google",
-                        authorizeUrl = "https://accounts.google.com/o/oauth2/auth",
-                        accessTokenUrl = "https://accounts.google.com/o/oauth2/token",
+                        name = GOOGLE_PROVIDER_NAME,
+                        authorizeUrl = config.property(GOOGLE_CLOUD_OAUTH2_AUTHORIZE_URL).getString(),
+                        accessTokenUrl = config.property(GOOGLE_CLOUD_OAUTH2_ACCESS_TOKEN_URL).getString(),
                         requestMethod = HttpMethod.Post,
                         clientId = config.property(GOOGLE_CLOUD_CLIENT_ID).getString(),
                         clientSecret = config.property(GOOGLE_CLOUD_CLIENT_SECRET).getString(),
-                        defaultScopes = listOf("https://www.googleapis.com/auth/userinfo.profile", "https://www.googleapis.com/auth/userinfo.email"),
-                        extraAuthParameters = listOf("access_type" to "offline"),
+                        defaultScopes = listOf(
+                            config.property(GOOGLE_CLOUD_OAUTH2_PROFILE_SCOPE).getString(),
+                            config.property(GOOGLE_CLOUD_OAUTH2_EMAIL_SCOPE).getString()
+                        ),
+                        extraAuthParameters = listOf(ACCESS_TYPE to OFFLINE_ACCESS_TYPE),
                         onStateCreated = { call, state ->
-                            call.application.environment.log.debug("FORTRA oauth: $state")
-                            call.application.environment.log.debug("FORTRA oauth: ${call.request.queryParameters["redirectUrl"].toString()}")
-                            call.application.environment.log.debug("FORTRA oauth: ${call.request.rawQueryParameters.toMap().toString()}")
-                            call.application.environment.log.debug("FORTRA oauth: ${call.response.status()}")
-
-                            call.request.queryParameters["redirectUrl"]?.let { redirects[state] = it }
+//                            call.application.environment.log.debug("FORTRA oauth: $state")
+//                            call.application.environment.log.debug("FORTRA oauth: ${call.request.queryParameters["redirectUrl"].toString()}")
+//                            call.application.environment.log.debug(
+//                                "FORTRA oauth: ${
+//                                    call.request.rawQueryParameters.toMap().toString()
+//                                }"
+//                            )
+//                            call.application.environment.log.debug("FORTRA oauth: ${call.response.status()}")
+//
+//                            call.request.queryParameters["redirectUrl"]?.let { redirects[state] = it }
 
                         }
                     )

@@ -15,7 +15,10 @@ jwt:
   audience: "http://0.0.0.0:8080/"
   realm: "Access to '/'"
 google_cloud:
-  oauth2_authorize_url: ""
-  oauth2_access_token_url: ""
+  oauth2_authorize_url: "https://accounts.google.com/o/oauth2/auth"
+  oauth2_access_token_url: "https://accounts.google.com/o/oauth2/token"
+  oauth2_profile_scope: "https://www.googleapis.com/auth/userinfo.profile"
+  oauth2_email_scope: "https://www.googleapis.com/auth/userinfo.email"
+  oauth2_user_info_url: "https://www.googleapis.com/oauth2/v2/userinfo"
   client_id: "client_id"
   client_secret: "client_secret"
