@@ -1,6 +1,7 @@
 package mevi.com.configs.db.dao
 
 import io.ktor.server.config.*
+import mevi.com.repository.tables.UserTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction
@@ -16,7 +17,7 @@ object DatabaseFactory {
         val database = Database.connect(jdbcURL, driverClassName)
         transaction(database) {
             // Statements here
-//            SchemaUtils.create(MODEL_NAME)
+            SchemaUtils.create(UserTable)
         }
     }
 }
