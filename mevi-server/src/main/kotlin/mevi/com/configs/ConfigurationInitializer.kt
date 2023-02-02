@@ -1,10 +1,9 @@
 package mevi.com.configs
 
 import io.ktor.server.application.*
-import mevi.com.configs.db.configureDatabase
 
 fun Application.initializeConfigurations() {
-    configureDatabase()
+    configureDatabase(this)
     configureCors()
     configureContentNegotiation()
     configureAuthentication(applicationHttpClient)

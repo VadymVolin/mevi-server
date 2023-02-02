@@ -1,7 +1,7 @@
 package mevi.com.repository.models
 
 data class UserEntity(
-    val id: Int,
+    val id: Long,
     val firstName: String,
     val lastName: String,
     val phoneNumber: String,
@@ -9,5 +9,6 @@ data class UserEntity(
     val email: String,
     val password: String,
     val country: String,
-    val gender: String
+    val gender: String,
+    val provider: String
 )
