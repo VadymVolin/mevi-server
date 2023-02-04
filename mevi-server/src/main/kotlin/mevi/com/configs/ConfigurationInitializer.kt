@@ -3,9 +3,10 @@ package mevi.com.configs
 import io.ktor.server.application.*
 
 fun Application.initializeConfigurations() {
-    configureDatabase(this)
     configureCors()
     configureContentNegotiation()
+    configureDatabase(this)
+    configureHandlers(this)
     configureAuthentication(applicationHttpClient)
     configureRouting()
 }

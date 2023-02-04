@@ -1,4 +1,4 @@
-package mevi.com.routes.api.web.auth.oauth.models
+package mevi.com.routes.api.web.auth.models
 
 import com.google.gson.annotations.SerializedName
 

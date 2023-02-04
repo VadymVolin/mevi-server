@@ -13,9 +13,8 @@ object DatabaseConfig {
             DatabaseFactory.init(it.environment.config)
         }
     }
-
 }
 
-fun configureDatabase(application: Application) {
+fun Application.configureDatabase(application: Application) {
     DatabaseConfig.application = application
 }

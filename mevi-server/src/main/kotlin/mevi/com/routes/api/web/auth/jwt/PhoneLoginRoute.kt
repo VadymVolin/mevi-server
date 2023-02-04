@@ -6,7 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import mevi.com.constants.*
-import mevi.com.routes.api.web.auth.jwt.models.EmailLoginUser
+import mevi.com.routes.api.web.auth.models.EmailLoginUser
 import java.util.*
 
 fun Route.phoneLoginRoute() {

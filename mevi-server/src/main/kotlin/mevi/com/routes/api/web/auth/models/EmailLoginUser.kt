@@ -1,4 +1,4 @@
-package mevi.com.routes.api.web.auth.jwt.models
+package mevi.com.routes.api.web.auth.models
 
 
 data class EmailLoginUser(val username: String, val password: String)

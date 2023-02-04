@@ -12,7 +12,8 @@ import mevi.com.constants.BEARER_HEADER_SEGMENT
 import mevi.com.constants.GOOGLE_AUTH_PROVIDER_ROUTE
 import mevi.com.constants.GOOGLE_CLOUD_OAUTH2_USER_INFO_URL
 import mevi.com.constants.GOOGLE_OAUTH_AUTH_ROUTE
-import mevi.com.routes.api.web.auth.oauth.models.GoogleOAuth2User
+import mevi.com.handlers.AuthDataHandler
+import mevi.com.routes.api.web.auth.models.GoogleOAuth2User
 
 
 fun Route.googleLoginRoute() {
@@ -22,15 +23,7 @@ fun Route.googleLoginRoute() {
 
     get(GOOGLE_AUTH_PROVIDER_ROUTE) {
         val principal: OAuthAccessTokenResponse.OAuth2? = call.principal()
-        val response = applicationHttpClient.get(call.application.environment.config.property(GOOGLE_CLOUD_OAUTH2_USER_INFO_URL).getString()) {
-            headers {
-                append(HttpHeaders.Authorization, "$BEARER_HEADER_SEGMENT ${principal?.accessToken}")
-            }
-        }
-        if (!response.status.isSuccess()) {
-            call.respondText("Error: ${response.status.value} | ${response.status.description} | ${response.body<String>()}")
-        }
-        val userInfo: GoogleOAuth2User = response.body()
+        val token = AuthDataHandler.authUserWithGoogle(principal?.accessToken)
 
         // check is user exist
         // true? update
@@ -38,6 +31,6 @@ fun Route.googleLoginRoute() {
         // generate jwt
         // respond
 
-        call.respondText("Hello, ${userInfo}!")
+        call.respondText("Hello, ${token}!")
     }
 }
