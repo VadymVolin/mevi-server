@@ -6,7 +6,7 @@ import io.ktor.server.request.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import mevi.com.constants.*
-import mevi.com.models.User
+import mevi.com.routes.api.web.auth.models.EmailLoginUser
 import java.util.*
 
 fun Route.phoneLoginRoute() {
@@ -15,13 +15,13 @@ fun Route.phoneLoginRoute() {
             val secret = config.property(JWT_SECRET).getString()
             val issuer = config.property(JWT_ISS).getString()
             val audience = config.property(JWT_AUD).getString()
-            val user = call.receive<User>()
+            val emailLoginUser = call.receive<EmailLoginUser>()
             // Check username and password
             val token = com.auth0.jwt.JWT.create()
                 .withAudience(audience)
                 .withIssuer(issuer)
-                .withClaim(USERNAME_PAYLOAD, user.username)
-                .withClaim(PASSWORD_PAYLOAD, user.password)
+                .withClaim(USERNAME_PAYLOAD, emailLoginUser.username)
+                .withClaim(PASSWORD_PAYLOAD, emailLoginUser.password)
                 .withIssuedAt(Date(System.currentTimeMillis()))
                 .withExpiresAt(Date(System.currentTimeMillis() + 60000))
                 .sign(HMAC256(secret))
