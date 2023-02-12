@@ -1,7 +1,7 @@
-package mevi.com.repository.dao.factory
+package mevi.com.cache.dao.factory
 
 import io.ktor.server.config.*
-import mevi.com.repository.dao.tables.UserTable
+import mevi.com.cache.dao.tables.UserTable
 import org.jetbrains.exposed.sql.Database
 import org.jetbrains.exposed.sql.SchemaUtils
 import org.jetbrains.exposed.sql.transactions.transaction

@@ -1,8 +1,7 @@
 package mevi.com.configs
 
 import io.ktor.server.application.*
-import mevi.com.repository.dao.factory.DatabaseFactory
-import org.jetbrains.exposed.sql.Database
+import mevi.com.cache.dao.factory.DatabaseFactory
 
 object DatabaseConfig {
 
@@ -15,6 +14,6 @@ object DatabaseConfig {
     }
 }
 
-fun Application.configureDatabase(application: Application) {
+fun configureDatabase(application: Application) {
     DatabaseConfig.application = application
 }

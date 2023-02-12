@@ -1,5 +1,6 @@
 val ktor_version: String by project
 val kotlin_version: String by project
+val kotlin_coroutines_version: String by project
 val logback_version: String by project
 val exposed_version: String by project
 val h2_version: String by project
@@ -47,6 +48,9 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-dao:$exposed_version")
     implementation("org.jetbrains.exposed:exposed-jdbc:$exposed_version")
     implementation("com.h2database:h2:$h2_version")
+
+// kotlin
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlin_coroutines_version")
 
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")

@@ -1,6 +1,6 @@
-package mevi.com.repository.dao.models
+package mevi.com.cache.dao.models
 
-import mevi.com.repository.dao.tables.UserTable
+import mevi.com.cache.dao.tables.UserTable
 import org.jetbrains.exposed.dao.LongEntity
 import org.jetbrains.exposed.dao.LongEntityClass
 import org.jetbrains.exposed.dao.id.EntityID
@@ -8,6 +8,7 @@ import org.jetbrains.exposed.dao.id.EntityID
 class UserEntity(id: EntityID<Long>) : LongEntity(id) {
     companion object : LongEntityClass<UserEntity>(UserTable)
 
+    var nickName by UserTable.nickName
     var firstName by UserTable.firstName
     var lastName by UserTable.lastName
     var phoneNumber by UserTable.phoneNumber

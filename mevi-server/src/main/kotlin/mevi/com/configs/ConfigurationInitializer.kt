@@ -7,6 +7,7 @@ fun Application.initializeConfigurations() {
     configureContentNegotiation()
     configureDatabase(this)
     configureHandlers(this)
+    configurePoxy(this, applicationHttpClient)
     configureAuthentication(applicationHttpClient)
     configureRouting()
 }

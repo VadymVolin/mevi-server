@@ -1,8 +1,9 @@
-package mevi.com.repository.dao.tables
+package mevi.com.cache.dao.tables
 
 import org.jetbrains.exposed.dao.id.LongIdTable
 
 internal object UserTable : LongIdTable() {
+    val nickName = varchar("nick_name", 16).nullable()
     val firstName = varchar("first_name", 16).nullable()
     val lastName = varchar("last_name", 16).nullable()
     val phoneNumber = varchar("phone_number", 13).nullable()

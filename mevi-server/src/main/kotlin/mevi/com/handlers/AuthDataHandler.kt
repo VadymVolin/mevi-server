@@ -2,12 +2,13 @@ package mevi.com.handlers
 
 import com.auth0.jwt.algorithms.Algorithm
 import io.ktor.client.call.*
-import io.ktor.client.request.*
 import io.ktor.http.*
 import io.ktor.server.application.*
-import io.ktor.server.response.*
-import mevi.com.configs.applicationHttpClient
+import mevi.com.cache.dao.UserDbProxy
+import mevi.com.cache.dao.models.UserEntity
 import mevi.com.constants.*
+import mevi.com.handlers.models.Result
+import mevi.com.network.UserNetworkProxy
 import mevi.com.routes.api.web.auth.models.GoogleOAuth2User
 import java.util.*
 
@@ -19,21 +20,21 @@ object AuthDataHandler {
         AuthDataHandler.application = application
     }
 
-    fun authUserWithGoogle(oAuth2AccessToken: String?) {
-        val app = application ?: return null
-        val token = oAuth2AccessToken ?: return null
-        val response = applicationHttpClient.get(app.environment.config.property(GOOGLE_CLOUD_OAUTH2_USER_INFO_URL).getString()) {
-            headers {
-                append(HttpHeaders.Authorization, "$BEARER_HEADER_SEGMENT $oAuth2AccessToken")
-            }
-        }
-        if (!response.status.isSuccess()) {
-            app.respondText("Error: ${response.status.value} | ${response.status.description} | ${response.body<String>()}")
+    suspend fun authUserWithGoogle(oAuth2AccessToken: String?): Result<String> {
+        val token = oAuth2AccessToken ?: return Result.Error(message = GENERIC_ERROR)
+        val response = UserNetworkProxy.getGoogleUserInfo(token)
+        if (response?.status?.isSuccess() != true) {
+            return Result.Error(message = GENERIC_ERROR)
         }
         val userInfo: GoogleOAuth2User = response.body()
+
+        val user: UserEntity = UserDbProxy.findUserByEmail(userInfo.email) ?: UserDbProxy.createGoogleUser(userInfo)
+        return createJwtToken(user.email, user.password ?: user.provider)?.let {
+            Result.Success(it)
+        } ?: Result.Error(message = GENERIC_ERROR)
     }
 
-    fun createJwtToken(usernameClaim: String, passwordClaim: String): String? {
+    fun createJwtToken(usernameClaim: String?, passwordClaim: String?): String? {
         val app = application ?: return null
         with(app.environment) {
             val secret = config.property(JWT_SECRET).getString()
